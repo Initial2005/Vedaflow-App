@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the VedaFlow application.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique identifier of the user."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the user."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the user."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "The URL of the user's profile photo."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the user was created."
+        }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "PracticeSession": {
+      "title": "PracticeSession",
+      "description": "A completed practice session.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The unique identifier of the user who completed the practice."
+        },
+        "exerciseId": {
+          "type": "string",
+          "description": "The unique identifier of the exercise."
+        },
+        "durationSeconds": {
+          "type": "number",
+          "description": "The duration of the practice session in seconds."
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the practice session was completed."
+        }
+      },
+      "required": ["userId", "exerciseId", "durationSeconds", "completedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles."
+    },
+    "/practices/{practiceId}": {
+      "schema": {
+        "$ref": "#/entities/PracticeSession"
+      },
+      "description": "Stores completed practice sessions."
+    }
+  }
+}
