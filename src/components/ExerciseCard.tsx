@@ -60,7 +60,7 @@ export function ExerciseCard({ exercise, index }: ExerciseCardProps) {
         </div>
 
         <div className="pt-10">
-          <PracticeTimer initialDuration={exercise.duration} />
+          <PracticeTimer initialDuration={exercise.duration} exerciseId={exercise.id} />
         </div>
       </div>
 

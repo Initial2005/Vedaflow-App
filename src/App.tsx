@@ -10,6 +10,7 @@ import { AgniDashboard } from './components/AgniDashboard';
 import { PracticeTimer } from './components/PracticeTimer';
 import { VideoTutorial } from './components/VideoTutorial';
 import { WisdomSection } from './components/WisdomSection';
+import { AboutSection } from './components/AboutSection';
 import { EXERCISES } from './types';
 import { Flame, ArrowRight, Sparkles, Wind } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
@@ -23,7 +24,7 @@ export default function App() {
   const [postureFilter, setPostureFilter] = useState<'all' | 'standing' | 'sitting'>('all');
   const [selectedExercise, setSelectedExercise] = useState(EXERCISES[0]);
   
-  const { user } = useAuth();
+  const { user, signIn } = useAuth();
   const [metabolicRate, setMetabolicRate] = useState(0);
   const [streak, setStreak] = useState(0);
   const [weeklyProgress, setWeeklyProgress] = useState(0);
@@ -120,9 +121,9 @@ export default function App() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section ref={heroRef} className="relative h-screen flex flex-col justify-center items-center overflow-hidden px-6 pt-20">
+      <section id="hero" ref={heroRef} className="relative h-screen flex flex-col justify-center items-center overflow-hidden px-6 pt-20">
         {/* Background Mantras */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex flex-col justify-around opacity-[0.04] text-terracotta font-display font-black whitespace-nowrap z-0">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex flex-col justify-around opacity-[0.04] text-terracotta font-display font-black whitespace-nowrap z-20">
           <motion.div
             animate={{ x: [0, -2000] }}
             transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
@@ -159,20 +160,20 @@ export default function App() {
             <Flame size={40} className="text-terracotta" />
           </motion.div>
 
-          <div className="space-y-6">
-            <motion.span
+          <div className="flex flex-col items-center gap-6">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-[10px] uppercase tracking-[0.5em] text-stone/40 font-black"
             >
               The Modern Asharama / Digital Sanctuary
-            </motion.span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-[16vw] md:text-[14vw] font-display font-black tracking-tighter leading-[0.75] text-stone uppercase"
+              className="text-[16vw] md:text-[14vw] font-display font-black tracking-tighter leading-[0.85] text-stone uppercase"
             >
               Veda<span className="italic text-terracotta">Flow</span>
             </motion.h1>
@@ -193,13 +194,22 @@ export default function App() {
             transition={{ duration: 0.8, delay: 1 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8"
           >
-            <a href="#practice" className="group bg-stone text-sand px-10 py-5 rounded-full text-xs uppercase tracking-widest font-black hover:bg-terracotta transition-all flex items-center gap-3 shadow-2xl shadow-stone/20">
-              Enter Sanctuary
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a href="#wisdom" className="px-10 py-5 rounded-full text-xs uppercase tracking-widest font-black border border-stone/10 hover:bg-stone/5 transition-all">
-              Explore Wisdom
-            </a>
+            {user ? (
+              <>
+                <a href="#practice" className="group bg-stone text-sand px-10 py-5 rounded-full text-xs uppercase tracking-widest font-black hover:bg-terracotta transition-all flex items-center gap-3 shadow-2xl shadow-stone/20">
+                  Enter Sanctuary
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </a>
+                <a href="#wisdom" className="px-10 py-5 rounded-full text-xs uppercase tracking-widest font-black border border-stone/10 hover:bg-stone/5 transition-all">
+                  Explore Wisdom
+                </a>
+              </>
+            ) : (
+              <button onClick={signIn} className="group bg-terracotta text-sand px-10 py-5 rounded-full text-xs uppercase tracking-widest font-black hover:bg-stone transition-all flex items-center gap-3 shadow-2xl shadow-terracotta/20">
+                Sign In to Begin
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            )}
           </motion.div>
         </motion.div>
 
@@ -212,8 +222,10 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* Dashboard Section */}
-      <section id="dashboard" className="py-32 px-6 bg-white/30 backdrop-blur-sm border-y border-stone/5">
+      {user && (
+        <>
+          {/* Dashboard Section */}
+          <section id="dashboard" className="py-32 px-6 bg-white/30 backdrop-blur-sm border-y border-stone/5">
         <div className="container mx-auto space-y-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="space-y-4">
@@ -327,6 +339,10 @@ export default function App() {
       </section>
 
       <WisdomSection />
+        </>
+      )}
+
+      <AboutSection />
 
       {/* Footer */}
       <footer className="py-12 px-6 bg-stone text-sand border-t border-white/5">

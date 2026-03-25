@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Home, BookOpen, PenTool, Compass, PlayCircle, LogOut } from 'lucide-react';
+import { Home, BookOpen, PenTool, Compass, PlayCircle, LogOut, Info } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface LayoutProps {
@@ -9,6 +9,27 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const { user, signIn, logOut } = useAuth();
+  const [activeSection, setActiveSection] = useState<string>('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-sand text-stone font-sans selection:bg-terracotta selection:text-sand">
@@ -23,9 +44,14 @@ export function Layout({ children }: LayoutProps) {
               Veda<span className="italic text-terracotta">Flow</span>
             </span>
             <div className="flex items-center gap-8 text-[10px] uppercase tracking-[0.2em] font-bold text-stone/60">
-              <a href="#practice" className="hover:text-terracotta transition-colors">Practice</a>
-              <a href="#dashboard" className="hover:text-terracotta transition-colors">Dashboard</a>
-              <a href="#wisdom" className="hover:text-terracotta transition-colors">Wisdom</a>
+              {user && (
+                <>
+                  <a href="#practice" className={`transition-colors ${activeSection === 'practice' ? 'text-terracotta' : 'hover:text-terracotta'}`}>Practice</a>
+                  <a href="#dashboard" className={`transition-colors ${activeSection === 'dashboard' ? 'text-terracotta' : 'hover:text-terracotta'}`}>Dashboard</a>
+                  <a href="#wisdom" className={`transition-colors ${activeSection === 'wisdom' ? 'text-terracotta' : 'hover:text-terracotta'}`}>Wisdom</a>
+                </>
+              )}
+              <a href="#about" className={`transition-colors ${activeSection === 'about' ? 'text-terracotta' : 'hover:text-terracotta'}`}>About Us</a>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -55,19 +81,21 @@ export function Layout({ children }: LayoutProps) {
       {/* Mobile BottomNavBar */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-6 pt-2">
         <div className="bg-stone/90 backdrop-blur-2xl rounded-full px-8 py-4 flex items-center justify-between border border-white/5 shadow-2xl">
-          <a href="#" className="text-sand/40 hover:text-terracotta transition-colors"><Home size={20} /></a>
-          <a href="#dashboard" className="text-sand/40 hover:text-terracotta transition-colors"><BookOpen size={20} /></a>
-          <div className="relative -top-8">
-            <a href="#practice" className="w-14 h-14 bg-terracotta rounded-full flex items-center justify-center text-sand shadow-2xl shadow-terracotta/40 border-4 border-sand">
-              <PlayCircle size={28} />
-            </a>
-          </div>
-          <a href="#wisdom" className="text-sand/40 hover:text-terracotta transition-colors"><Compass size={20} /></a>
-          {user ? (
-            <button onClick={logOut} className="text-sand/40 hover:text-terracotta transition-colors"><LogOut size={20} /></button>
-          ) : (
-            <button onClick={signIn} className="text-sand/40 hover:text-terracotta transition-colors"><PenTool size={20} /></button>
+          <a href="#" className={`${activeSection === '' || activeSection === 'hero' ? 'text-terracotta' : 'text-sand/40'} hover:text-terracotta transition-colors`}><Home size={20} /></a>
+          
+          {user && (
+            <>
+              <a href="#dashboard" className={`${activeSection === 'dashboard' ? 'text-terracotta' : 'text-sand/40'} hover:text-terracotta transition-colors`}><BookOpen size={20} /></a>
+              <div className="relative -top-8">
+                <a href="#practice" className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl border-4 ${activeSection === 'practice' ? 'bg-stone text-terracotta border-terracotta shadow-stone/40' : 'bg-terracotta text-sand border-sand shadow-terracotta/40'}`}>
+                  <PlayCircle size={28} />
+                </a>
+              </div>
+              <a href="#wisdom" className={`${activeSection === 'wisdom' ? 'text-terracotta' : 'text-sand/40'} hover:text-terracotta transition-colors`}><Compass size={20} /></a>
+            </>
           )}
+          
+          <a href="#about" className={`${activeSection === 'about' ? 'text-terracotta' : 'text-sand/40'} hover:text-terracotta transition-colors`}><Info size={20} /></a>
         </div>
       </nav>
 

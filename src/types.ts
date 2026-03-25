@@ -33,7 +33,7 @@ export const EXERCISES: Exercise[] = [
     posture: 'standing',
     duration: 45,
     imageUrl: 'https://picsum.photos/seed/trikona/800/1000',
-    youtubeId: 'upFQxXm3m10' // Short Triangle Pose tutorial
+    youtubeId: 'S6gB0QHbWFE' // Short Triangle Pose tutorial
   },
   {
     id: 'virabhadrasana',
@@ -44,7 +44,7 @@ export const EXERCISES: Exercise[] = [
     posture: 'standing',
     duration: 60,
     imageUrl: 'https://picsum.photos/seed/warrior/800/1000',
-    youtubeId: '4EjB7Pjftuk' // Short Warrior Pose tutorial
+    youtubeId: '56hnUF1scTE' // Short Warrior Pose tutorial
   },
   {
     id: 'paschimottanasana',
@@ -55,7 +55,7 @@ export const EXERCISES: Exercise[] = [
     posture: 'sitting',
     duration: 90,
     imageUrl: 'https://picsum.photos/seed/paschim/800/1000',
-    youtubeId: 'T8SGvuE-gXQ' // Short Seated Forward Bend tutorial
+    youtubeId: '1E-84p0itDs' // Short Seated Forward Bend tutorial
   },
   {
     id: 'dhanurasana',
@@ -77,6 +77,6 @@ export const EXERCISES: Exercise[] = [
     posture: 'sitting',
     duration: 60,
     imageUrl: 'https://picsum.photos/seed/twist/800/1000',
-    youtubeId: 'W4H1X8tZg8E' // Short Half Spinal Twist tutorial
+    youtubeId: 'wJpyMgbxytU' // Short Half Spinal Twist tutorial
   }
 ];

@@ -7,6 +7,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { handleFirestoreError, OperationType } from '../lib/firestore-error';
 
 interface TimerProps {
+  key?: string | number;
   initialDuration: number;
   exerciseId: string;
   onComplete?: () => void;
